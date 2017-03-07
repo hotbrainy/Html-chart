@@ -1,0 +1,193 @@
+  <!doctype html>
+  <meta http-equiv="content-type" content="text/html; charset=windows-1250">
+
+<!--[if lte IE 8]><SCRIPT src='source/excanvas.js'></script><![endif]-->
+<SCRIPT src='../ChartNew.js'></script>
+<SCRIPT src='../Add-ins/shapesInChart.js'></script>
+<SCRIPT src='../Add-ins/specialInChartData.js'></script>
+
+
+<SCRIPT>
+
+
+defCanvasWidth=1200;
+defCanvasHeight=600;
+
+
+
+
+var mydata1 = { 
+     labels : ["2014","2015","2016"], 
+     datasets : [ 
+           { 
+      data : [30,15,14], 
+      fillColor : "#D97041", 
+      title : "data1" 
+           }, 
+           { 
+      data : [90,,25], 
+      fillColor : "#C7604C", 
+      title : "data2"
+           }, 
+           { 
+      data : [24,10], 
+      fillColor : "#21323D", 
+      title : "data3"
+           }, 
+           { 
+      data : [58], 
+      fillColor : "#9D9B7F", 
+      title : "data4"
+           }, 
+           { 
+      data : [,82,17], 
+      fillColor : "#7D4F6D", 
+      title : "data5"
+           }, 
+           { 
+      data : [,8,], 
+      fillColor : "#584A5E", 
+      title : "data6"
+           } 
+] 
+};
+
+var mydata2 = { 
+     labels : ["2014","2015","2016"], 
+     datasets : [ 
+           { 
+      data : [30,15,14], 
+      fillColor : "#D97041", 
+      title : "data1" 
+           }, 
+           { 
+      data : [90,,25], 
+      fillColor : "#C7604C", 
+      title : "data2"
+           }, 
+           { 
+      data : [24,10], 
+      fillColor : "#21323D", 
+      title : "data3"
+           }, 
+           { 
+      data : [58], 
+      fillColor : "#9D9B7F", 
+      title : "data4"
+           }, 
+           { 
+      data : [,82,17], 
+      fillColor : "#7D4F6D", 
+      title : "data5"
+           }, 
+           { 
+      data : [,8,], 
+      fillColor : "#584A5E", 
+      title : "data6"
+           } 
+] 
+};
+
+var image=new Image();
+image.src="plus_sign.jpg";
+
+
+
+var mydata3 = { 
+     labels : ["2014","2015","2016"], 
+     datasets : [ 
+           { 
+      data : [30,15,14], 
+      fillColor : "#D97041", 
+      title : "data1", 
+      link : "line", 
+      imageLoad : image
+           }, 
+           { 
+      data : [90,,25], 
+      fillColor : "#C7604C", 
+      title : "data2",
+      link : "line", 
+      imagePos : 0 
+           }, 
+           { 
+      data : [24,10], 
+      fillColor : "#21323D", 
+      title : "data3",
+      link : "line"
+           }, 
+           { 
+      data : [58], 
+      fillColor : "#9D9B7F", 
+      title : "data4",
+      link : "triangle" 
+           }, 
+           { 
+      data : [,82,17], 
+      fillColor : "#7D4F6D", 
+      title : "data5",
+      link : "triangle", 
+      imageLoad : image,
+      imagePos : 0, 
+      imageHeight : 40, 
+      imageWidth : 40, 
+      text : "My own text in Italic Bold", 
+      fontStyle : "italic bold", 
+      fontSize : [,25,15],
+           }, 
+           { 
+      data : [,8,], 
+      fillColor : "#584A5E", 
+      title : "data6",
+      link : "triangle", 
+      imagePos : 0, 
+      imageHeight : 40, 
+      imageWidth : 40
+           } 
+] 
+};
+
+
+var myopt = {
+	animation : false,
+	canvasBorders : true,
+	inGraphDataShow : false,
+	spaceTop : 55,
+	spaceBottom : 40,
+	endDrawDataFunction: drawShapes 
+
+}
+
+
+
+pushInGraphData("Doughnut",mydata1,myopt,{text: "<Title> (<Value>)",fontSize : 12,linkStrokeColorLine: "grey",piePaddingY :0.1, avoidOverwrite :true, imagePos: 1, link : "line"});
+pushInGraphData("Doughnut",mydata2,myopt,{text: "<Title> (<Value>)",fontSize : 12,linkStrokeColorLine: "grey",piePaddingY :0.1, avoidOverwrite :true, imagePos: 1, link : "triangle"});
+pushInGraphData("Doughnut",mydata3,myopt,{text: "<Title> (<Value>)",fontSize : 12,linkStrokeColorLine: "grey",piePaddingY :0.1, avoidOverwrite :true, imagePos: 1, link : "triangle"});
+
+
+</SCRIPT>
+
+
+<html>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<head>
+		<title>Demo ChartNew.js</title>
+	</head>
+	<body>
+   
+  <center>
+    <FONT SIZE=6><B>Demo of ChartNew.js !</B></FONT>    <BR>
+
+    <script>
+
+    document.write("<canvas id=\"canvas1\" height=\""+defCanvasHeight+"\" width=\""+defCanvasWidth+"\"></canvas>");
+    document.write("<canvas id=\"canvas2\" height=\""+defCanvasHeight+"\" width=\""+defCanvasWidth+"\"></canvas>");
+    document.write("<canvas id=\"canvas3\" height=\""+defCanvasHeight+"\" width=\""+defCanvasWidth+"\"></canvas>");
+window.onload = function() {
+    var myCanvas1 = new Chart(document.getElementById("canvas1").getContext("2d")).Doughnut(mydata1,myopt);
+    var myCanvas2 = new Chart(document.getElementById("canvas2").getContext("2d")).Doughnut(mydata2,myopt);
+    var myCanvas3 = new Chart(document.getElementById("canvas3").getContext("2d")).Doughnut(mydata3,myopt);
+}
+    </script>
+  </body>
+</html>

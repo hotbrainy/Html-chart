@@ -1,0 +1,82 @@
+    <!doctype html>
+  
+  <SCRIPT src='../ChartNew.js'></script>
+  <SCRIPT src='../Add-ins/stats.js'></script>
+  <SCRIPT src='../Add-ins/shapesInChart.js'></script>
+  
+  <SCRIPT>
+  
+  defCanvasWidth=850;
+  defCanvasHeight=600;
+  
+  var mydata1 = { 
+     labels : [""], 
+     datasets : [ 
+           { 
+      data : [30], 
+      fillColor : "#D97041", 
+      title : "data1 #variable_mydata1.datasets[0].data[0]#" 
+           }, 
+           { 
+      data : [90], 
+      fillColor : "#C7604C", 
+      title : "data2 #variable_mydata1.datasets[1].data[0]#"
+           }, 
+           { 
+      data : [24], 
+      fillColor : "#21323D", 
+      title : "data3 #variable_mydata1.datasets[2].data[0]#"
+           }, 
+           { 
+      data : [58], 
+      fillColor : "#9D9B7F", 
+      title : "data4 #variable_mydata1.datasets[3].data[0]#"
+           }, 
+           { 
+      data : [82], 
+      fillColor : "#7D4F6D", 
+      title : "data5 #variable_mydata1.datasets[4].data[0]#"
+           }, 
+           { 
+      data : [8], 
+      fillColor : "#584A5E", 
+      title : "data6 #variable_mydata1.datasets[5].data[0]#"
+           } 
+] 
+};
+  
+  
+  var conf = {
+      canvasBorders : true,
+      inGraphDataShow : true,
+      inGraphDataTmpl: "<%=v3%>",
+      legend : true,
+      legendFontSize : 25,
+      legendPosX : 3,
+      legendPosY : -2,
+      maxLegendCols : 1
+  }
+  
+  
+  </SCRIPT>
+  
+  <html>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  	<head>
+  		<title>Demo ChartNew.js</title>
+  
+  	</head>
+  	<body>
+  
+  <script>
+  
+  stats(mydata1,conf);
+  
+  document.write("<canvas id=\"canvas_pie\" height=\""+defCanvasHeight+"\" width=\""+defCanvasWidth+"\"></canvas>");
+  
+  window.onload = function() {
+      var myBar = new Chart(document.getElementById("canvas_pie").getContext("2d")).Doughnut(mydata1,conf);
+  }      
+  </script>
+    </body>
+  </html>

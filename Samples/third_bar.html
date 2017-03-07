@@ -1,0 +1,188 @@
+  <!doctype html>
+
+<!--[if lte IE 8]><SCRIPT src='source/excanvas.js'></script><![endif]--><SCRIPT src='../ChartNew.js'></script>
+<SCRIPT src='../Add-ins/shapesInChart.js'></script>
+<SCRIPT src='../Add-ins/drawLegend.js'></script>
+
+
+<SCRIPT>
+
+var charJSPersonnalDefaultOptions = { decimalSeparator : "," , thousandSeparator : ".", roundNumber : "none", graphTitleFontSize: 2 };
+
+defCanvasWidth=1200;
+defCanvasHeight=600;
+
+
+
+// *************************************************;
+
+var   leftScaleStartValue = 10; 
+var   leftScaleStepWidth = 20;
+var   leftScaleSteps = 9; 
+
+var   rightScaleStartValue = 20; 
+var   rightScaleStepWidth = 40;
+var   rightScaleSteps = 6; 
+
+// *************************************************;
+
+
+
+
+var mydata1 = {
+	labels : ["January","February","March","April","May","June","July"],
+//	labels : ["January"],
+	datasets : [
+		{
+			fillColor : "rgba(220,220,220,0.5)",
+			strokeColor : "rgba(220,220,220,1)",
+			data : [95,53,99,,73,27,82],
+			axis : 1,
+      			title : "2012"
+		},
+		{
+			fillColor : "rgba(151,187,205,0.5)",
+			strokeColor : "rgba(151,187,205,1)",
+			data : [35,43,59,,31,50,66],
+			axis : 1,
+      			title : "2013"
+		},
+		{
+			fillColor : "rgba(220,220,220,0.5)",
+			strokeColor : "rgba(220,220,220,1)",
+			data : [58,47,124,41,67,91,115],
+			axis : 1,
+      			title : "2014"
+		},
+		{
+			// define the data of the overlapping bar as last; Those data will be removed. This is just to simplify your life !
+        		fillColor: "rgba(220,0,200,0.2)",
+        		strokeColor : "rgba(0,0,0,0)",
+			data : [210,80,145,187,64,99,157],
+			axis : 2,
+			title : "Third bar"			
+		}
+	]
+}               
+
+// compute conversion factor for second axis;
+
+var leftTopScale=leftScaleStartValue+(leftScaleSteps*leftScaleStepWidth);
+var rightTopScale=rightScaleStartValue+(rightScaleSteps*rightScaleStepWidth);
+
+var convert_a=leftScaleStartValue;
+var convert_b=(leftTopScale-leftScaleStartValue)/(rightTopScale-rightScaleStartValue);
+
+// Build the legend;
+
+mydata1.shapesInChart=[];
+mydata1.legend =[];
+for(i=0;i<mydata1.datasets.length;i++)
+{
+	mydata1.legend[mydata1.legend.length]= {
+		element : "shapeText",
+		shape : "rectangle",
+		shapeFillColor : mydata1.datasets[i].fillColor,
+		shapeBordersColor : mydata1.datasets[i].strokeColor,
+		text : mydata1.datasets[i].title
+	};
+}
+
+// Build Third Bar through shapes in chart;
+
+var i,prevPos;
+var decal=0.03;
+
+for(i=0;i<mydata1.datasets[mydata1.datasets.length-1].data.length;i++) {
+	if(mydata1.datasets[mydata1.datasets.length-1].axis!=2) {
+		converted_y2=mydata1.datasets[mydata1.datasets.length-1].data[i]
+	} else {
+      		converted_y2=convert_a+(mydata1.datasets[mydata1.datasets.length-1].data[i]-rightScaleStartValue)*convert_b;
+	}
+	mydata1.shapesInChart[mydata1.shapesInChart.length]= {
+		        position : "INCHART",
+        		shape: "RECTANGLE",
+        		fillColor: mydata1.datasets[mydata1.datasets.length-1].fillColor,
+        		strokeColor : mydata1.datasets[mydata1.datasets.length-1].strokeColor,
+        		animate : false,
+        		x1: -0.5+i+decal,
+        		y1: 0,
+        		x2: 0.50+i-decal    ,
+        		y2: converted_y2,
+        		y2_original_value : mydata1.datasets[mydata1.datasets.length-1].data[i]
+	}
+	prevPos=mydata1.shapesInChart.length-1;
+	mydata1.shapesInChart[mydata1.shapesInChart.length]= {
+			position : "INCHART",
+			shape: "TEXT",
+			text : mydata1.shapesInChart[prevPos].y2_original_value,
+			textAlign : "center",
+			textBaseline : "bottom",
+			fontColor : "black", 
+			fontSize : 18,
+			animate : false,
+			x1: mydata1.shapesInChart[prevPos].x1+(mydata1.shapesInChart[prevPos].x2-mydata1.shapesInChart[prevPos].x1)/2, 
+			y1 : mydata1.shapesInChart[prevPos].y2,
+			paddingX1 : 0,
+			paddingY1 : -5,
+			iter : "last"
+	};
+
+}
+
+// remove last data;
+
+mydata1.datasets.splice(mydata1.datasets.length-1,1);
+
+
+
+var opt1 = {
+      canvasBorders : true,
+      graphTitle : "third bar",
+      legend : true,
+      inGraphDataShow : true,
+      annotateDisplay : true,
+      graphTitleFontSize: 18,
+      endDrawDataFunction : drawShapes,
+      
+      scaleOverride: true, 
+      scaleStartValue : leftScaleStartValue, 
+      scaleStepWidth : leftScaleStepWidth,
+      scaleSteps : leftScaleSteps, 
+      scaleOverride2 : true, 
+      forceSecondScale : true,
+      scaleStartValue2 : rightScaleStartValue, 
+      scaleStepWidth2 : rightScaleStepWidth,
+      scaleSteps2 : rightScaleSteps, 
+      yAxisRight : true,
+      yAxisLeft : true 
+}
+
+
+
+</SCRIPT>
+
+
+<html>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<head>
+		<title>Demo ChartNew.js</title>
+	</head>
+	<body>
+   
+  <center>
+    <FONT SIZE=6><B>Demo of ChartNew.js !</B></FONT>    <BR>
+
+    <script>
+
+    document.write("<canvas id=\"canvas_Bar1\" height=\""+defCanvasHeight+"\" width=\""+defCanvasWidth+"\"></canvas>");
+window.onload = function() {
+
+
+    var myBar = new Chart(document.getElementById("canvas_Bar1").getContext("2d")).Bar(mydata1,opt1);
+
+}
+
+    </script>
+  </body>
+</html>

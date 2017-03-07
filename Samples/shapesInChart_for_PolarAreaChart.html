@@ -1,0 +1,241 @@
+  <!doctype html>
+  <meta http-equiv="content-type" content="text/html; charset=windows-1250">
+
+<!--[if lte IE 8]><SCRIPT src='source/excanvas.js'></script><![endif]-->
+<SCRIPT src='../ChartNew.js'></script>
+<SCRIPT src='../Add-ins/stats.js'></script>
+<SCRIPT src='../Add-ins/shapesInChart.js'></script>
+
+
+<SCRIPT>
+
+function setColor(area,data,config,i,j,animPct,value)
+{
+  if(value > 35)return("rgba(220,0,0,"+animPct);
+  else return("rgba(0,220,0,"+animPct);
+  
+}
+
+var charJSPersonnalDefaultOptions = { decimalSeparator : "," , thousandSeparator : ".", roundNumber : "none", graphTitleFontSize: 2 };
+
+defCanvasWidth=1200;
+defCanvasHeight=600;
+var mydata1 = { 
+     labels : [""], 
+     datasets : [ 
+           { 
+      data : [30], 
+      fillColor : "rgba(220,0,220,0.2)", 
+      title : "data1" 
+           }, 
+           { 
+      data : [90], 
+      fillColor : "rgba(0,0,220,0.2)", 
+      title : "data2"
+           }, 
+           { 
+      data : [24], 
+      fillColor : "rgba(220,0,0,0.2)", 
+      title : "data3"
+           }, 
+           { 
+      data : [58], 
+      fillColor : "rgba(0,220,220,0.2)", 
+      title : "data4"
+           }, 
+           { 
+      data : [82], 
+      fillColor : "rgba(0,220,0,0.2)", 
+      title : "data5"
+           }, 
+           { 
+      data : [8], 
+      fillColor : "rgba(50,100,150,0.2)", 
+      title : "data6"
+           } 
+],
+shapesInChart : [
+		{
+			position : "INCHART",
+			shape: "CIRCLE",
+			fillColor: "rgba(0,0,0,0)",
+			strokeColor : "grey",
+			strokeStyle: "dashed",
+			animate : false,
+			x1: 0,
+			y1: 0,
+			radius : -1,
+			x2 : 0,
+			y2 : "<%=#mean#+#standard_deviation#%>"
+		} ,
+		{
+			position : "INCHART",
+			shape: "CIRCLE",
+			fillColor: "rgba(0,0,0,0)",
+			strokeColor : "grey",
+			strokeStyle: "dashed",
+			animate : false,
+			x1: 0,
+			y1: 0,
+			radius : -1,
+			x2 : 0,
+			y2 : "<%=#mean#%>"
+		},
+		{
+			position : "INCHART",
+			shape: "CIRCLE",
+			fillColor: "rgba(0,0,0,0)",
+			strokeColor : "grey",
+			strokeStyle: "dashed",
+			animate : false,
+			x1: 0,
+			y1: 0,
+			radius : -1,
+			x2 : 0,
+			y2 : "<%=#mean#-#standard_deviation#%>"
+		},
+		{
+			position : "INCHART",
+			shape: "ARROW",
+			x1:  0.6,
+			y1 : "<%=#mean#+#standard_deviation#%>",
+			x2:  0.6,
+			y2 : "<%=#MAXIMUM#+30%>",
+			strokeColor : "grey",
+			strokeStyle: "dashed",
+			limitToChart : false,
+			iter : "last"
+		},
+		{
+			position : "INCHART",
+			shape: "ARROW",
+			x1:  0.7,
+			y1 : "<%=#mean#%>",
+			x2:  0.7,
+			y2 : "<%=#MAXIMUM#+30%>",
+			strokeColor : "grey",
+			strokeStyle: "dashed",
+			limitToChart : false,
+			iter : "last"
+		},
+		{
+			position : "INCHART",
+			shape: "ARROW",
+			x1:  0.8,
+			y1 : "<%=#mean#-#standard_deviation#%>",
+			x2:  0.8,
+			y2 : "<%=#MAXIMUM#+30%>",
+			strokeColor : "grey",
+			strokeStyle: "dashed",
+			limitToChart : false,
+			iter : "last"
+		},
+		{
+			position : "INCHART",
+			shape: "TEXT",
+			textAlign : "left",
+			textBaseLine : "middle",
+			fontColor : "black", 
+			fontStyle : "italic",
+			fontSize : 16,
+			text : "<%='Mean+St.Dev:\n'+roundToNumber(#mean#+#standard_deviation#,-2)%>",
+			x1:  0.6,
+			y1 : "<%=#MAXIMUM#+30%>",
+			paddingX1 : 15,
+			limitToChart : false,
+			iter : "last"
+		},
+		{
+			position : "INCHART",
+			shape: "TEXT",
+			textAlign : "left",
+			textBaseLine : "middle",
+			fontColor : "black", 
+			fontStyle : "italic",
+			fontSize : 16,
+			text : "<%='Mean:\n'+roundToNumber(#mean#,-2)%>",
+			x1:  0.7,
+			y1 : "<%=#MAXIMUM#+30%>",
+			paddingX1 : 15,
+			limitToChart : false,
+			iter : "last"
+		},
+		{
+			position : "INCHART",
+			shape: "TEXT",
+			textAlign : "left",
+			textBaseLine : "middle",
+			fontColor : "black", 
+			fontStyle : "italic",
+			fontSize : 16,
+			text : "<%='Mean-St.Dev:\n'+roundToNumber(#mean#-#standard_deviation#,-2)%>",
+			x1:  0.8,
+			y1 : "<%=#MAXIMUM#+30%>",
+			paddingX1 : 15,
+			limitToChart : false,
+			iter : "last"
+		},
+]
+ 
+};
+
+
+
+
+
+var opt1 = {
+	datasetFill : false,
+	animation : false,
+	graphMin : 0,
+	canvasBorders : true,
+	legend : true,
+	inGraphDataShow : true,
+	endDrawScaleFunction: drawShapes
+
+}
+
+function roundToNumber(num, place) {
+    var newval=1*num;
+
+    if(typeof(newval)=="number"){
+      if(place<=0){
+        var roundVal=-place;
+        newval= +(Math.round(newval + "e+" + roundVal) + "e-" + roundVal);
+      }
+      else {
+        var roundVal=place;
+        var divval= "1e+"+roundVal;
+        newval= +(Math.round(newval/divval))*divval;
+      }
+    }
+    return(newval);
+} ;
+
+
+
+stats(mydata1,opt1);
+
+
+
+</SCRIPT>
+
+
+<html>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<head>
+		<title>Demo ChartNew.js</title>
+	</head>
+	<body>
+   
+  <center>
+    <FONT SIZE=6><B>Demo of ChartNew.js !</B></FONT>    <BR>
+
+    <script>
+
+    document.write("<canvas id=\"canvas_Line\" height=\""+defCanvasHeight+"\" width=\""+defCanvasWidth+"\"></canvas>");
+window.onload = function() {
+    var myLine = new Chart(document.getElementById("canvas_Line").getContext("2d")).PolarArea(mydata1,opt1);
+}
+    </script>
+  </body>
+</html>
